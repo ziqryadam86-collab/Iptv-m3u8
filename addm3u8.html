@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>HLS Video Player</title>
+    <style>
+        #videoPlayer {
+            width: 100%;
+            max-width: 600px;
+        }
+        .controls {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>HLS Video Player</h1>
+    <video id="videoPlayer" controls>
+        <source id="videoSource" src="channel1.m3u8" type="application/x-mpegURL">
+        Your browser does not support HTML5 video.
+    </video>
+    <div class="controls">
+        <button onclick="playVideo()">Play</button>
+        <button onclick="stopVideo()">Stop</button>
+        <button onclick="nextChannel()">Next Channel</button>
+        <button onclick="volumeUp()">Volume Up</button>
+        <button onclick="volumeDown()">Volume Down</button>
+        <input type="text" id="channelInput" placeholder="Add m3u8 URL">
+        <button onclick="addChannel()">Add Channel</button>
+    </div>
+
+    <script>
+        let currentChannel = 0;
+        const channels = [
+            'channel1.m3u8',
+            'channel2.m3u8',
+            'channel3.m3u8',
+            'channel4.m3u8',
+            'channel5.m3u8'
+        ];
+
+        function playVideo() {
+            const video = document.getElementById('videoPlayer');
+            video.play();
+        }
+
+        function stopVideo() {
+            const video = document.getElementById('videoPlayer');
+            video.pause();
+        }
+
+        function nextChannel() {
+            currentChannel = (currentChannel + 1) % channels.length;
+            document.getElementById('videoSource').src = channels[currentChannel];
+            document.getElementById('videoPlayer').load();
+            playVideo();
+        }
+
+        function volumeUp() {
+            const video = document.getElementById('videoPlayer');
+            video.volume = Math.min(video.volume + 0.1, 1);
+        }
+
+        function volumeDown() {
+            const video = document.getElementById('videoPlayer');
+            video.volume = Math.max(video.volume - 0.1, 0);
+        }
+
+        function addChannel() {
+            const newChannel = document.getElementById('channelInput').value;
+            if (newChannel) {
+                channels.push(newChannel);
+                document.getElementById('channelInput').value = '';
+            }
+        }
+    </script>
+</body>
+</html>
